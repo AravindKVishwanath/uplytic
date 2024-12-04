@@ -275,69 +275,80 @@ function recordResponse(question, value, index) {
 
 // Calculate and display results
 function calculateResults(questions) {
-    totalDuration = (new Date() - startTime) / 1000; // in seconds
+  totalDuration = (new Date() - startTime) / 1000; // in seconds
 
-    // Identify unanswered questions
-    questions.forEach((q, index) => {
-        if (!responses.find((response) => response.question === q.question)) {
-            unanswered.push(index + 1); // Store question number
-        }
-    });
+  // Identify unanswered questions
+  questions.forEach((q, index) => {
+      if (!responses.find((response) => response.question === q.question)) {
+          unanswered.push(index + 1); // Store question number
+      }
+  });
 
-    // Analyze results
-    const answers = {};
-    responses.forEach((response) => {
-        const { category, subcategory } = response;
-        answers[category] = answers[category] || {};
-        answers[category][subcategory] = (answers[category][subcategory] || 0) + 1;
-    });
+  // Analyze results
+  const answers = {};
+  responses.forEach((response) => {
+      const { category, subcategory } = response;
+      answers[category] = answers[category] || {};
+      answers[category][subcategory] = (answers[category][subcategory] || 0) + 1;
+  });
 
-    const result = calculateDominantTraits(answers);
+  const result = calculateDominantTraits(answers);
 
-    // Calculate average time per question
-    const averageTimePerQuestion =
-        responses.reduce((sum, response) => sum + response.timeTaken, 0) /
-        responses.length;
+  // Display results
+  const quizContainer = document.getElementById("quiz-container");
+  quizContainer.classList.add("hidden");
 
-    // Check for rushing behavior (more than 5 responses under the threshold)
-    const rushingThreshold = 2; // Example: Threshold is 2 seconds
-    const rushedAnswers = responses.filter((response) => response.timeTaken < rushingThreshold);
-    const rushingDetected = rushedAnswers.length > 5;
+  const resultContainer = document.getElementById("result-container");
+  resultContainer.classList.remove("hidden");
 
-    // Display results
-    const quizContainer = document.getElementById("quiz-container");
-    quizContainer.classList.add("hidden");
+  resultContainer.innerHTML = `
+      <h3>Your Learning Style:</h3>
+      <p>${result.join(" + ")}</p>
+      <p><strong>Total Time:</strong> ${totalDuration.toFixed(2)} seconds</p>
+  `;
 
-    const resultContainer = document.getElementById("result-container");
-    resultContainer.classList.remove("hidden");
+  // Show the signup form
+  const signupForm = document.getElementById("signup-form");
+  signupForm.classList.remove("hidden");
 
-    resultContainer.innerHTML = `
-        <h3>Your Learning Style:</h3>
-        <p>${result.join(" + ")}</p>
-        <p><strong>Total Time:</strong> ${totalDuration.toFixed(2)} seconds</p>
-        <h4>Time Taken Per Question:</h4>
-        <ul>
-            ${responses
-                .map(
-                    (response, index) =>
-                        `<li>Question ${index + 1}: ${response.timeTaken.toFixed(
-                            2
-                        )} seconds</li>`
-                )
-                .join("")}
-        </ul>
-        <p><strong>Average Time Per Question:</strong> ${averageTimePerQuestion.toFixed(
-            2
-        )} seconds</p>
-        ${rushingDetected ? `
-        <p style="color: red;"><strong>Warning:</strong> You answered more than 5 questions too quickly. 
-        Please retake the quiz to ensure accurate results.</p>
-        <button onclick="restartQuiz()">Retake Quiz</button>
-        ` : ""}
-        <p><strong>Questions Unanswered:</strong> ${
-            unanswered.length ? unanswered.join(", ") : "None"
-        }</p>
-    `;
+  // Handle form submission
+  signupForm.addEventListener("submit", (e) => {
+      e.preventDefault(); // Prevent form refresh
+
+      // Collect user details
+      const username = document.getElementById("username").value;
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+
+      // Send data to the /signup API
+      sendSignupRequest({ username, email, password, traits: result });
+  });
+}
+
+// Function to send data to /signup API
+function sendSignupRequest(userData) {
+  fetch("http://localhost:5000/signup", {
+      method: "POST",
+      headers: {
+          "Content-Type": "application/json",
+      },
+      body: JSON.stringify(userData),
+  })
+      .then((response) => {
+          if (response.ok) {
+              return response.json();
+          } else {
+              throw new Error("Failed to sign up. Please try again.");
+          }
+      })
+      .then((data) => {
+          alert("Signup successful! Your results have been saved.");
+          console.log("Server Response:", data);
+      })
+      .catch((error) => {
+          console.error("Error:", error);
+          alert("Error during signup: " + error.message);
+      });
 }
 
 // Calculate dominant traits
