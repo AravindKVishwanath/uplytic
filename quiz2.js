@@ -5,7 +5,7 @@ let currentIndex = 0;
 // Fetch questions from the backend
 async function fetchQuestions() {
     try {
-        const response = await fetch('http://localhost:5000/app', {
+        const response = await fetch('http://localhost:5000/app2', {
             method: 'GET',
             headers: { 'Content-Type': 'application/json' },
         });
@@ -142,7 +142,7 @@ async function sendMessage() {
     input.disabled = true;
 
     try {
-        const response = await fetch('http://localhost:5000/chat', {
+        const response = await fetch('http://localhost:5000/chat2', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ message }),

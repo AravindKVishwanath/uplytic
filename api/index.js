@@ -15,13 +15,13 @@ app.use(express.json());
 // MongoDB Connection
 const MONGO_URI = process.env.MONGO_URI || "mongodb+srv://aravindkvishwanath59:aravind@uplytic.qajam.mongodb.net/";
 mongoose
-  .connect(MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
-  .then(() => console.log("Connected to MongoDB"))
-  .catch((err) => console.error("Error connecting to MongoDB:", err));
+    .connect(MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
+    .then(() => console.log("Connected to MongoDB"))
+    .catch((err) => console.error("Error connecting to MongoDB:", err));
 
 // Sample Route
 app.get("/", (req, res) => {
-  res.send("Server is running!");
+    res.send("Server is running!");
 });
 
 ///////////////////////////////////////////////
@@ -136,22 +136,195 @@ const pythonQuestions = [
 ];
 
 // Endpoint for quiz questions
-app.get('/app', (req, res) => {
+app.get('/app1', (req, res) => {
     res.json(pythonQuestions);
 });
 
 // Chatbot logic
-app.post('/chat', (req, res) => {
+app.post('/chat1', (req, res) => {
     const userMessage = req.body.message.toLowerCase();
     const response = pythonQuestions.find(q => userMessage.includes(q.question.toLowerCase()));
 
     if (response) {
-        res.json({ answer: `Question: ${response.question}, Answer: ${response.correctAnswer}`,
-        explanation: `Explanation: ${response.explanation}` });
+        res.json({
+            answer: `Question: ${response.question}, Answer: ${response.correctAnswer}`,
+            explanation: `Explanation: ${response.explanation}`
+        });
     } else {
         res.json({ answer: "I'm sorry, I can only answer questions based on the provided Python quiz questions." });
     }
 });
+
+const historyQuestions = [
+    {
+        question: "What is colonialism?",
+        options: [
+            "A system where a country rules over another",
+            "A political alliance",
+            "A form of government",
+            "None of the above"
+        ],
+        correctAnswer: "A system where a country rules over another",
+        subtopic: "Colonialism",
+        explanation: "Colonialism refers to a system where one country takes control over another, exploiting its resources and people for the benefit of the colonizing country."
+    },
+    {
+        question: "Who led the Revolt of 1857 in Kanpur?",
+        options: ["Rani Lakshmibai", "Nana Saheb", "Bahadur Shah Zafar", "Mangal Pandey"],
+        correctAnswer: "Nana Saheb",
+        subtopic: "Revolt of 1857",
+        explanation: "Nana Saheb led the uprising in Kanpur during the Revolt of 1857 against British rule."
+    },
+    {
+        question: "What was the main objective of the Permanent Settlement?",
+        options: [
+            "Increase agricultural output",
+            "Ensure fixed revenue for the British",
+            "Support Indian farmers",
+            "None of the above"
+        ],
+        correctAnswer: "Ensure fixed revenue for the British",
+        subtopic: "Land Revenue Policies",
+        explanation: "The Permanent Settlement aimed to fix revenue collections for the British while putting landlords in charge of collecting taxes."
+    },
+    {
+        question: "Who founded the Brahmo Samaj?",
+        options: ["Raja Ram Mohan Roy", "Swami Vivekananda", "Jyotirao Phule", "Bal Gangadhar Tilak"],
+        correctAnswer: "Raja Ram Mohan Roy",
+        subtopic: "Reform Movements",
+        explanation: "Raja Ram Mohan Roy founded the Brahmo Samaj to promote social and religious reforms, including the abolition of sati."
+    },
+    {
+        question: "What was the Doctrine of Lapse?",
+        options: [
+            "A policy to expand British territories",
+            "A rule to collect more taxes",
+            "A law for Indian trade",
+            "None of the above"
+        ],
+        correctAnswer: "A policy to expand British territories",
+        subtopic: "Expansion Policies",
+        explanation: "The Doctrine of Lapse allowed the British to annex Indian states without a male heir."
+    },
+    {
+        question: "Who was the last Governor-General of India?",
+        options: ["Lord Mountbatten", "C. Rajagopalachari", "Warren Hastings", "Lord Wellesley"],
+        correctAnswer: "C. Rajagopalachari",
+        subtopic: "Post-Independence",
+        explanation: "C. Rajagopalachari was the last Governor-General of India after independence in 1947."
+    },
+    {
+        question: "Which Act allowed Indians to participate in the administration?",
+        options: [
+            "Regulating Act of 1773",
+            "Charter Act of 1813",
+            "Indian Councils Act of 1892",
+            "Government of India Act, 1935"
+        ],
+        correctAnswer: "Indian Councils Act of 1892",
+        subtopic: "Legislation",
+        explanation: "The Indian Councils Act of 1892 allowed limited participation of Indians in legislative councils."
+    },
+    {
+        question: "What was the main aim of the Swadeshi Movement?",
+        options: [
+            "Promote Indian goods",
+            "End British rule",
+            "Establish democracy",
+            "None of the above"
+        ],
+        correctAnswer: "Promote Indian goods",
+        subtopic: "Freedom Struggle",
+        explanation: "The Swadeshi Movement encouraged the use of Indian-made goods to reduce dependence on British imports."
+    },
+    {
+        question: "What is the significance of the Jallianwala Bagh massacre?",
+        options: [
+            "It ended British rule in India",
+            "It exposed British cruelty",
+            "It was a major battle",
+            "None of the above"
+        ],
+        correctAnswer: "It exposed British cruelty",
+        subtopic: "Freedom Struggle",
+        explanation: "The Jallianwala Bagh massacre in 1919 revealed the brutal nature of British colonial rule, leading to widespread anger."
+    },
+    {
+        question: "Which leader is known as the 'Grand Old Man of India'?",
+        options: ["Bal Gangadhar Tilak", "Mahatma Gandhi", "Dadabhai Naoroji", "Jawaharlal Nehru"],
+        correctAnswer: "Dadabhai Naoroji",
+        subtopic: "Freedom Movement",
+        explanation: "Dadabhai Naoroji is called the 'Grand Old Man of India' for his contributions to India's independence struggle and his work on poverty."
+    },
+    {
+        question: "What was the Rowlatt Act?",
+        options: [
+            "A law to end British rule",
+            "A policy to suppress Indians",
+            "A tax regulation",
+            "None of the above"
+        ],
+        correctAnswer: "A policy to suppress Indians",
+        subtopic: "Freedom Struggle",
+        explanation: "The Rowlatt Act allowed the British to detain Indians without trial, leading to widespread protests."
+    },
+    {
+        question: "What does the term 'Satyagraha' mean?",
+        options: [
+            "Passive resistance",
+            "Truth and non-violence",
+            "Armed rebellion",
+            "None of the above"
+        ],
+        correctAnswer: "Truth and non-violence",
+        subtopic: "Freedom Struggle",
+        explanation: "Satyagraha, promoted by Mahatma Gandhi, emphasized truth and non-violence in resistance to injustice."
+    },
+    {
+        question: "Who introduced the Subsidiary Alliance?",
+        options: ["Lord Dalhousie", "Lord Wellesley", "Lord Curzon", "Lord Canning"],
+        correctAnswer: "Lord Wellesley",
+        subtopic: "Expansion Policies",
+        explanation: "Lord Wellesley introduced the Subsidiary Alliance to establish British control over Indian states."
+    },
+    {
+        question: "Which city was the capital of British India before Delhi?",
+        options: ["Bombay", "Calcutta", "Madras", "Pune"],
+        correctAnswer: "Calcutta",
+        subtopic: "Colonial Administration",
+        explanation: "Calcutta served as the capital of British India until it was shifted to Delhi in 1911."
+    },
+    {
+        question: "Who gave the slogan 'Do or Die'?",
+        options: ["Subhas Chandra Bose", "Mahatma Gandhi", "Jawaharlal Nehru", "Bhagat Singh"],
+        correctAnswer: "Mahatma Gandhi",
+        subtopic: "Freedom Struggle",
+        explanation: "Mahatma Gandhi gave the slogan 'Do or Die' during the Quit India Movement in 1942."
+    }
+];
+
+// Endpoint for quiz questions
+app.get('/app2', (req, res) => {
+    res.json(historyQuestions);
+});
+
+// Chatbot logic
+app.post('/chat2', (req, res) => {
+    const userMessage = req.body.message.toLowerCase();
+    const response = historyQuestions.find(q => userMessage.includes(q.question.toLowerCase()));
+
+    if (response) {
+        res.json({
+            answer: `Question: ${response.question}, Answer: ${response.correctAnswer}`,
+            explanation: `Explanation: ${response.explanation}`
+        });
+    } else {
+        res.json({
+            answer: "I'm sorry, I can only answer questions based on the provided history quiz questions."
+        });
+    }
+});
+
 
 // Start server
 ///////////////////////////////////////////////
@@ -159,50 +332,50 @@ app.post('/chat', (req, res) => {
 
 // Signup Route
 app.post("/signup", async (req, res) => {
-  try {
-      const { username, email, password, traits } = req.body;
+    try {
+        const { username, email, password, traits } = req.body;
 
-      // Validate input
-      if (!username || !email || !password || !traits) {
-          return res.status(400).json({ message: "All fields are required" });
-      }
+        // Validate input
+        if (!username || !email || !password || !traits) {
+            return res.status(400).json({ message: "All fields are required" });
+        }
 
-      // Check if user already exists
-      const existingUser = await User.findOne({ email });
-      if (existingUser) {
-          return res.status(400).json({ message: "User already exists" });
-      }
+        // Check if user already exists
+        const existingUser = await User.findOne({ email });
+        if (existingUser) {
+            return res.status(400).json({ message: "User already exists" });
+        }
 
-      // Hash the password
-      const hashedPassword = await bcrypt.hash(password, 10);
+        // Hash the password
+        const hashedPassword = await bcrypt.hash(password, 10);
 
-      // Create a new user
-      const newUser = new User({
-          username,
-          email,
-          password: hashedPassword,
-          learningStyle: {
-              speed: traits[0],
-              engagement: traits[1],
-              retention: traits[2],
-              contentPreference: traits[3],
-          },
-      });
+        // Create a new user
+        const newUser = new User({
+            username,
+            email,
+            password: hashedPassword,
+            learningStyle: {
+                speed: traits[0],
+                engagement: traits[1],
+                retention: traits[2],
+                contentPreference: traits[3],
+            },
+        });
 
-      // Save to database
-      const savedUser = await newUser.save();
+        // Save to database
+        const savedUser = await newUser.save();
 
-      res.status(201).json({ message: "User registered successfully", user: savedUser });
-  } catch (error) {
-      console.error("Error during signup:", error);
-      res.status(500).json({ message: "Internal Server Error" });
-  }
+        res.status(201).json({ message: "User registered successfully", user: savedUser });
+    } catch (error) {
+        console.error("Error during signup:", error);
+        res.status(500).json({ message: "Internal Server Error" });
+    }
 });
 
 
 // Start Server
 app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
+    console.log(`Server running on http://localhost:${PORT}`);
 });
 
 

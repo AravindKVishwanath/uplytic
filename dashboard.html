@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Courier New', Courier, monospace;
+            background-color: #0d1117;
+            color: #c9d1d9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .dashboard-container {
+            text-align: center;
+            padding: 30px;
+            border: 2px solid #58a6ff;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(88, 166, 255, 0.2);
+            background: #161b22;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            color: #58a6ff;
+            margin-bottom: 20px;
+            text-shadow: 0 2px 5px rgba(88, 166, 255, 0.5);
+        }
+
+        .button-container {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+        }
+
+        .topic-button {
+            padding: 15px 30px;
+            font-size: 1.2rem;
+            color: #0d1117;
+            background: #58a6ff;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(88, 166, 255, 0.5);
+        }
+
+        .topic-button:hover {
+            background: #1f6feb;
+            color: #ffffff;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(31, 111, 235, 0.5);
+        }
+
+        .topic-button:active {
+            transform: translateY(0);
+            box-shadow: 0 3px 7px rgba(31, 111, 235, 0.3);
+        }
+
+        .footer {
+            margin-top: 20px;
+            font-size: 0.9rem;
+            color: #8b949e;
+        }
+
+        .footer a {
+            color: #58a6ff;
+            text-decoration: none;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <h1>Select Your Topic</h1>
+        <div class="button-container">
+            <button class="topic-button" onclick="redirectTo('quiz1.html')">Python</button>
+            <button class="topic-button" onclick="redirectTo('quiz2.html')">History</button>
+        </div>
+        <div class="footer">
+            <p>Explore and learn! Visit our <a href="#">resources page</a> for more.</p>
+        </div>
+    </div>
+
+    <script>
+        function redirectTo(page) {
+            window.location.href = page;
+        }
+    </script>
+</body>
+</html>
