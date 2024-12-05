@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI Learning Platform</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="styles2.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
     <!-- Header -->
@@ -19,54 +20,68 @@
     </header>
 
     <!-- Welcome Screen -->
-    <section id="welcome-screen" style="height: 100vh;">
-        <h1>Welcome to UPLYTIC</h1>
-        <div class="auth-buttons">
-            <button id="login-btn">Login</button>
-            <button id="signup-btn">Sign Up</button>
+    <section id="welcome-screen">
+        <div class="welcome-content">
+            <h1>Welcome to <span>UPLYTIC</span></h1>
+            <p>Your personalized AI-powered learning journey begins here.</p>
+            <button class="auth-button" id="login-btn">Take a test before signing up</button>
         </div>
-        <button class="google-login">Sign In with Google Account</button>
     </section>
 
     <!-- Dashboard -->
-    <section id="dashboard" class="hidden" style="height: 100vh;">
-        <h2>Welcome Back, [User Name]</h2>
-        <div class="options">
-            <a href="./assessment.html"><button>Take Learning Assesment</button></a>
-            <button>Learn a new skill</button>
+    <section id="dashboard" class="hidden">
+        <div class="dashboard-content">
+            <h2>Welcome Back, <span>[User Name]</span></h2>
+            <div class="options">
+                <a href="./assessment.html"><button class="dashboard-btn">Take Learning Assessment</button></a>
+                <a href="./quiz.html"><button class="dashboard-btn">Learn a New Skill</button></a>
+            </div>
         </div>
     </section>
 
     <!-- Pricing Section -->
-    <section id="pricing" style="height: 100vh;">
+    <section id="pricing">
         <h2>Pricing</h2>
+        <p>Choose the plan that best fits your learning needs.</p>
         <div class="plans">
             <div class="plan">
                 <h3>₹50/month</h3>
-                <p>1 course at a time</p>
-                <p>AI Assistant Support</p>
-                <p>Personalized Learning Path</p>
+                <ul>
+                    <li>1 course at a time</li>
+                    <li>AI Assistant Support</li>
+                    <li>Personalized Learning Path</li>
+                </ul>
             </div>
-            <div class="plan">
+            <div class="plan popular">
                 <h3>₹100/month</h3>
-                <p>2 courses at a time</p>
-                <p>AI Assistant Support</p>
-                <p>Personalized Learning Path</p>
+                <ul>
+                    <li>2 courses at a time</li>
+                    <li>AI Assistant Support</li>
+                    <li>Personalized Learning Path</li>
+                </ul>
             </div>
             <div class="plan">
                 <h3>₹200/month</h3>
-                <p>No limit to courses</p>
-                <p>AI Assistant Support</p>
-                <p>Personalized Learning Path</p>
+                <ul>
+                    <li>Unlimited courses</li>
+                    <li>AI Assistant Support</li>
+                    <li>Personalized Learning Path</li>
+                </ul>
             </div>
         </div>
     </section>
 
     <!-- Footer -->
     <footer>
-        <p>&copy; 2024 AI Assistant. All rights reserved.</p>
+        <p>&copy; 2024 UPLYTIC. All rights reserved.</p>
     </footer>
-
+    <script>
+        document.getElementById('login-btn').addEventListener('click', function () {
+            // Scroll to the "dashboard" section
+            document.getElementById('dashboard').scrollIntoView({ behavior: 'smooth' });
+        });
+    </script>
+    
     <script src="script.js"></script>
 </body>
 </html>

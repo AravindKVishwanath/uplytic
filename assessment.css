@@ -1,72 +1,87 @@
+/* General Styling */
 body {
-    font-family: Arial, sans-serif;
-    line-height: 1.6;
-    background-color: #f9f9f9;
-    color: #333;
+    font-family: 'Arial', sans-serif;
     margin: 0;
     padding: 0;
     display: flex;
     justify-content: center;
     align-items: center;
+    background-color: #f9f9f9;
     min-height: 100vh;
 }
 
+/* Wrapper Styling */
 #quiz-wrapper {
-    background: #ffffff;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
-    width: 100%;
-    max-width: 600px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     padding: 20px;
-    box-sizing: border-box;
+    width: 90%;
+    max-width: 400px;
+    text-align: center;
 }
 
-.hidden {
-    display: none;
-}
-
+/* Button Styling */
 .btn {
-    background-color: #007bff;
-    color: #fff;
-    padding: 10px 20px;
+    display: inline-block;
+    background-color: #0078d7;
+    color: white;
     border: none;
-    border-radius: 4px;
-    font-size: 16px;
+    border-radius: 5px;
+    padding: 10px 20px;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    font-size: 1rem;
+    margin: 15px 0;
+    transition: background-color 0.3s;
 }
 
 .btn:hover {
-    background-color: #0056b3;
+    background-color: #005bb5;
 }
 
-#quiz-container p {
-    font-size: 18px;
-    margin-bottom: 15px;
-}
-
-input[type="radio"] {
-    margin-right: 10px;
+/* Form Group Styling */
+.form-group {
+    margin-bottom: 20px;
+    text-align: left;
 }
 
 label {
     display: block;
-    margin-bottom: 10px;
+    font-size: 0.9rem;
+    font-weight: bold;
+    margin-bottom: 5px;
 }
 
-h3, h4 {
-    margin: 20px 0 10px;
-    color: #007bff;
-}
-
-ul {
-    list-style-type: none;
-    padding: 0;
-}
-
-li {
-    background: #f1f1f1;
-    margin: 5px 0;
+input[type="text"],
+input[type="email"],
+input[type="password"] {
+    width: 100%;
     padding: 10px;
-    border-radius: 4px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 0.9rem;
+    transition: border-color 0.3s;
+}
+
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="password"]:focus {
+    border-color: #0078d7;
+    outline: none;
+}
+
+/* Quiz Section */
+.hidden {
+    display: none;
+}
+
+#result-container {
+    margin-top: 20px;
+}
+
+/* Heading Styling */
+h4 {
+    font-size: 1.2rem;
+    margin-bottom: 15px;
+    color: #333;
 }
