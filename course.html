@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Assistant Dashboard</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Courier New', Courier, monospace;
+            background-color: #0D1117;
+            color: #C9D1D9;
+        }
+
+        .container {
+            display: flex;
+            height: 100vh;
+        }
+
+        .sidebar {
+            width: 20%;
+            background-color: #161B22;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .sidebar h2 {
+            color: #58A6FF;
+            margin-bottom: 10px;
+            font-size: 24px;
+        }
+
+        .sidebar button {
+            background-color: #21262D;
+            color: #C9D1D9;
+            border: 1px solid #30363D;
+            border-radius: 6px;
+            padding: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            text-align: left;
+            transition: 0.3s;
+        }
+
+        .sidebar button:hover {
+            background-color: #58A6FF;
+            color: #0D1117;
+            border: 1px solid #58A6FF;
+        }
+
+        .progress-container {
+            margin-top: auto;
+            background-color: #21262D;
+            border-radius: 8px;
+            padding: 15px;
+            text-align: center;
+        }
+
+        .progress-container h3 {
+            color: #58A6FF;
+            margin-bottom: 10px;
+        }
+
+        .progress-bar {
+            background-color: #58A6FF;
+            height: 20px;
+            border-radius: 10px;
+            width: 70%;
+            margin: 0 auto;
+        }
+
+        .content {
+            flex-grow: 1;
+            background-color: #0D1117;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .content .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #161B22;
+            padding: 15px;
+            border-radius: 8px;
+        }
+
+        .header h1 {
+            color: #58A6FF;
+            font-size: 24px;
+        }
+
+        .header button {
+            background-color: #21262D;
+            color: #C9D1D9;
+            border: 1px solid #30363D;
+            border-radius: 6px;
+            padding: 8px 15px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .header button:hover {
+            background-color: #58A6FF;
+            color: #0D1117;
+        }
+
+        .task-container {
+            flex-grow: 1;
+            background-color: #161B22;
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 20px;
+            overflow-y: auto;
+        }
+
+        .task-container h2 {
+            color: #58A6FF;
+            margin-bottom: 15px;
+        }
+
+        .task-container p {
+            color: #C9D1D9;
+            font-size: 18px;
+            line-height: 1.6;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .action-buttons button {
+            flex-grow: 1;
+            background-color: #21262D;
+            color: #C9D1D9;
+            border: 1px solid #30363D;
+            border-radius: 6px;
+            padding: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .action-buttons button:hover {
+            background-color: #58A6FF;
+            color: #0D1117;
+        }
+
+        .progress-text {
+            margin-top: 10px;
+            color: #C9D1D9;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="sidebar">
+            <h2>AI Assistant</h2>
+            <button>Topic 1</button>
+            <button>Topic 2</button>
+            <button>Topic 3</button>
+
+            <div class="progress-container">
+                <h3>Progress</h3>
+                <div class="progress-bar"></div>
+                <p class="progress-text">70% Complete</p>
+            </div>
+        </div>
+
+        <div class="content">
+            <div class="header">
+                <h1>Skill Name</h1>
+                <button>Mark Task Complete</button>
+            </div>
+
+            <div class="task-container">
+                <h2>Topic 3</h2>
+                <p>This is the detailed description of the task. Students can review the content and take notes here.</p>
+
+                <div class="action-buttons">
+                    <button onclick="window.location.href='notes.html'">Take Notes</button>
+                    <button onclick="window.location.href='assignment.html'">Solve Assignment</button>
+                    <button>Ask Doubt</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solve Python Assignment</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/codemirror.min.css">
+    <style>
+        body {
+            font-family: 'Courier New', Courier, monospace;
+            background-color: #0A0E17;
+            color: #C9D1D9;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .main-container {
+            flex: 2;
+            background-color: #161B22;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.7);
+            max-width: 65%;
+            overflow: hidden;
+        }
+
+        .history-container {
+            flex: 1;
+            background-color: #161B22;
+            border-radius: 10px;
+            padding: 20px;
+            height: 100%;
+            overflow-y: auto;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.7);
+            max-width: 30%;
+        }
+
+        .history-container h2 {
+            color: #58A6FF;
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        .CodeMirror {
+            height: 400px;
+            border: 1px solid #30363D;
+            background-color: #0D1117;
+            color: #C9D1D9;
+            border-radius: 6px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
+        }
+
+        .CodeMirror-cursor {
+            border-left: 2px solid #ffffff !important;
+        }
+
+        h1 {
+            text-align: center;
+            color: #58A6FF;
+            margin-bottom: 30px;
+            font-size: 2rem;
+        }
+
+        .editor-container {
+            background-color: #161B22;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.7);
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .terminal {
+            background-color: #161B22;
+            border: 1px solid #30363D;
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 20px;
+            height: 150px;
+            overflow-y: auto;
+            color: #58A6FF;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 20px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.7);
+        }
+
+        .action-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        button {
+            background-color: #21262D;
+            color: #C9D1D9;
+            border: 2px solid #58A6FF;
+            border-radius: 8px;
+            padding: 12px 25px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+        }
+
+        button:hover {
+            background-color: #58A6FF;
+            color: #0A0E17;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.6);
+        }
+
+        button:active {
+            transform: translateY(1px);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.4);
+        }
+
+        .history-entry {
+            margin-bottom: 15px;
+            padding: 10px;
+            background-color: #21262D;
+            border-radius: 6px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .history-entry.error {
+            background-color: #33181E;
+            color: #E06C75;
+        }
+
+        .history-entry.success {
+            background-color: #1D3F24;
+            color: #98C379;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="main-container">
+        <h1>Solve Python Assignment</h1>
+        <div class="editor-container">
+            <textarea id="editor"># Write your Python code here...
+print("Hello, World!")</textarea>
+        </div>
+
+        <div class="action-buttons">
+            <button onclick="runCode()">Run Code</button>
+            <button>Submit Assignment</button>
+        </div>
+        <h1>Terminal</h1>
+        <div class="terminal" id="output"></div>
+    </div>
+
+    <div class="history-container">
+        <h2>Execution History</h2>
+        <div id="history"></div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/codemirror.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/mode/python/python.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/skulpt/dist/skulpt.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/skulpt/dist/skulpt-stdlib.js"></script>
+    <script>
+        const editor = CodeMirror.fromTextArea(document.getElementById('editor'), {
+            mode: "python",
+            theme: "dracula",
+            lineNumbers: true,
+        });
+
+        function runCode() {
+            const code = editor.getValue();
+            const output = document.getElementById("output");
+            output.textContent = ""; // Clear previous output
+
+            // Skulpt configuration
+            Sk.configure({
+                output: (text) => {
+                    output.textContent += text + "\n"; // Append output text
+                },
+                read: (x) => {
+                    if (Sk.builtinFiles === undefined || Sk.builtinFiles["files"][x] === undefined) {
+                        throw `File not found: '${x}'`;
+                    }
+                    return Sk.builtinFiles["files"][x];
+                },
+                inputfun: (prompt) => {
+                    return window.prompt(prompt); // Use prompt for user input
+                },
+            });
+
+            // Run the Python code
+            Sk.misceval.asyncToPromise(() => Sk.importMainWithBody("<stdin>", false, code))
+                .then(() => {
+                    const history = document.getElementById("history");
+                    history.innerHTML += `<div class='history-entry success'><strong>Code executed successfully</strong><p>${output.textContent}</p></div>`;
+                })
+                .catch((err) => {
+                    output.textContent += `Error: ${err.toString()}`;
+                    const history = document.getElementById("history");
+                    history.innerHTML += `<div class='history-entry error'><strong>Error:</strong> ${err.toString()}</div>`;
+                });
+        }
+    </script>
+</body>
+
+</html>
