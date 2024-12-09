@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Roadmap</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Courier New', Courier, monospace;
+            background-color: #0e101c;
+            color: #d1d5db;
+        }
+
+        #roadmap-container {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 1.5rem;
+            background: linear-gradient(145deg, #1a1e33, #131626);
+            border-radius: 10px;
+            box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.5);
+            text-align: center;
+        }
+
+        h1 {
+            color: #4fbcff;
+            margin-bottom: 2rem;
+            font-size: 2rem;
+            /* text-shadow: 0px 0px 10px #4fbcff; */
+        }
+
+        .roadmap-item {
+            background: #131626;
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+            border-left: 5px solid #4fbcff;
+        }
+
+        .roadmap-item h2 {
+            color: #4fbcff;
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            /* text-shadow: 0px 0px 6px #4fbcff; */
+        }
+
+        .roadmap-item p {
+            font-size: 1rem;
+            line-height: 1.5;
+            color: #d1d5db;
+        }
+
+        h3 {
+            color: #89d4ff;
+            margin-top: 1rem;
+            font-size: 1.2rem;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+            margin: 0.5rem 0;
+        }
+
+        ul li {
+            padding: 0.3rem 0;
+            font-size: 1rem;
+            color: #a0f0ff;
+        }
+
+        ul li:before {
+            content: "• ";
+            color: #4fbcff;
+            font-weight: bold;
+        }
+
+        button {
+            background: #4fbcff;
+            color: #0e101c;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 8px;
+            font-size: 1rem;
+            cursor: pointer;
+            margin-top: 1rem;
+            transition: background 0.3s ease;
+        }
+
+        button:hover {
+            background: #89d4ff;
+        }
+
+        button:active {
+            background: #1f8dbd;
+        }
+
+        @media screen and (max-width: 768px) {
+            #roadmap-container {
+                padding: 1rem;
+            }
+
+            .roadmap-item h2 {
+                font-size: 1.3rem;
+            }
+
+            p, ul li {
+                font-size: 0.9rem;
+            }
+
+            button {
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="roadmap-container">
+        <h1>Your Personalized Roadmap</h1>
+        <div id="roadmap-content"></div>
+        <button onclick="goBack()">Go Back</button>
+    </div>
+
+    <script>
+        function loadRoadmap() {
+            const roadmap = JSON.parse(localStorage.getItem('roadmap'));
+
+            if (!roadmap) {
+                document.getElementById('roadmap-content').innerHTML = '<p>No roadmap available.</p>';
+                return;
+            }
+
+            const content = roadmap.map(item => `
+                <div class="roadmap-item">
+                    <h2>${item.subtopic}</h2>
+                    <p>${item.description}</p>
+                    <h3>Resources</h3>
+                    <ul>${item.resources.map(resource => `<li>${resource}</li>`).join('')}</ul>
+                    <h3>Tips</h3>
+                    <ul>${item.tips.map(tip => `<li>${tip}</li>`).join('')}</ul>
+                </div>
+            `).join('');
+
+            document.getElementById('roadmap-content').innerHTML = content;
+        }
+
+        function goBack() {
+            window.location.href = 'index.html'; // Redirect to quiz page
+        }
+
+        loadRoadmap();
+    </script>
+</body>
+</html>

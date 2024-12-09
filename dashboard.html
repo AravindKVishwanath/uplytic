@@ -23,6 +23,7 @@
             border-radius: 10px;
             box-shadow: 0 4px 20px rgba(88, 166, 255, 0.2);
             background: #161b22;
+            width: 80%;
         }
 
         h1 {
@@ -32,15 +33,20 @@
             text-shadow: 0 2px 5px rgba(88, 166, 255, 0.5);
         }
 
-        .button-container {
-            display: flex;
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
             gap: 20px;
-            justify-content: center;
+            justify-items: center;
         }
 
         .topic-button {
-            padding: 15px 30px;
-            font-size: 1.2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 15px;
+            font-size: 1rem;
             color: #0d1117;
             background: #58a6ff;
             border: none;
@@ -48,6 +54,14 @@
             cursor: pointer;
             transition: all 0.3s ease;
             box-shadow: 0 4px 10px rgba(88, 166, 255, 0.5);
+            text-align: center;
+        }
+
+        .topic-button img {
+            width: 120px; /* Increased width */
+            height: 100px; /* Keep height the same */
+            border-radius: 8px;
+            margin-bottom: 10px;
         }
 
         .topic-button:hover {
@@ -81,9 +95,55 @@
 <body>
     <div class="dashboard-container">
         <h1>Select Your Topic</h1>
-        <div class="button-container">
-            <button class="topic-button" onclick="redirectTo('quiz1.html')">Python</button>
-            <button class="topic-button" onclick="redirectTo('quiz2.html')">History</button>
+        <div class="grid-container">
+            <button class="topic-button" onclick="sendTopic('Python')">
+                <img src="https://cdn.bap-software.net/2024/06/14204324/What-is-Python-3.12_11zon.webp" alt="Python">
+                Python
+            </button>
+            <button class="topic-button" onclick="sendTopic('History')">
+                <img src="https://d1whtlypfis84e.cloudfront.net/guides/wp-content/uploads/2018/03/16025228/bell.jpg" alt="History">
+                History
+            </button>
+            <button class="topic-button" onclick="sendTopic('Mathematics')">
+                <img src="https://thumbs.dreamstime.com/b/maths-doodle-line-set-school-illustration-hand-drawn-vector-clip-art-background-banner-logos-336783902.jpg" alt="Mathematics">
+                Mathematics
+            </button>
+            <button class="topic-button" onclick="sendTopic('Science')">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ7aUU_-wkSj27H5_2Sl-IW91O8POxZuU3Vfw&s" alt="Science">
+                Science
+            </button>
+            <button class="topic-button" onclick="sendTopic('Technology')">
+                <img src="https://www.simplilearn.com/ice9/free_resources_article_thumb/Technology_Trends.jpg" alt="Technology">
+                Technology
+            </button>
+            <button class="topic-button" onclick="sendTopic('Geography')">
+                <img src="https://study.com/cimages/videopreview/videopreview-full/p3c2j8y73a.jpg" alt="Geography">
+                Geography
+            </button>
+            <button class="topic-button" onclick="sendTopic('Literature')">
+                <img src="https://static.toiimg.com/imagenext/toiblogs/photo/readersblog/wp-content/uploads/2021/02/litreture-TOI.jpg" alt="Literature">
+                Literature
+            </button>
+            <button class="topic-button" onclick="sendTopic('Art')">
+                <img src="https://static.vecteezy.com/system/resources/thumbnails/022/334/884/small_2x/background-art-manipulation-nature-concept-digital-creative-manipulation-photo.jpg" alt="Art">
+                Art
+            </button>
+            <button class="topic-button" onclick="sendTopic('Music')">
+                <img src="https://capian.co/assets/images/uploads/blog/ckia8-music-lockdown-1fa0fb8b.jpg" alt="Music">
+                Music
+            </button>
+            <button class="topic-button" onclick="sendTopic('Sports')">
+                <img src="https://img.freepik.com/free-vector/sport-text-banner-poster-design_1308-132612.jpg?semt=ais_hybrid" alt="Sports">
+                Sports
+            </button>
+            <button class="topic-button" onclick="sendTopic('Physics')">
+                <img src="https://i.ytimg.com/vi/ZAqIoDhornk/hq720.jpg?sqp=-oaymwEhCK4FEIIDSFryq4qpAxMIARUAAAAAGAElAADIQj0AgKJD&rs=AOn4CLB0s3neePHG-GkYX91eNFWNjjqboA" alt="Physics">
+                Physics
+            </button>
+            <button class="topic-button" onclick="sendTopic('Chemistry')">
+                <img src="https://bright-culture.com/wp-content/uploads/2021/06/learn-chemistry-optimized.jpg" alt="Chemistry">
+                Chemistry
+            </button>
         </div>
         <div class="footer">
             <p>Explore and learn! Visit our <a href="#">resources page</a> for more.</p>
@@ -91,8 +151,9 @@
     </div>
 
     <script>
-        function redirectTo(page) {
-            window.location.href = page;
+        function sendTopic(topic) {
+            localStorage.setItem('selectedTopic', topic);
+            window.location.href = 'quiz1.html'; // Redirect to the quiz page
         }
     </script>
 </body>

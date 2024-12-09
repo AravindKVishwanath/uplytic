@@ -5,9 +5,11 @@ let currentIndex = 0;
 // Fetch questions from the backend
 async function fetchQuestions() {
     try {
-        const response = await fetch('http://localhost:5000/app1', {
-            method: 'GET',
+        const topic = localStorage.getItem('selectedTopic'); // Replace with user input if necessary
+        const response = await fetch('http://localhost:5000/app', {
+            method: 'POST',
             headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ topic }),
         });
 
         if (!response.ok) {
@@ -15,7 +17,8 @@ async function fetchQuestions() {
         }
 
         const data = await response.json();
-        console.log(data)
+        console.log(data);
+
         questions = data.map(question => ({ ...question, userAnswer: null }));
         subtopicPerformance = data.reduce((acc, question) => {
             acc[question.subtopic] = { correct: 0, total: 0 };
@@ -98,7 +101,10 @@ function submitQuiz() {
             }
         }
     });
-    console.log(Object.entries(subtopicPerformance))
+
+    // Store subtopic performance in local storage
+    localStorage.setItem('subtopicPerformance', JSON.stringify(subtopicPerformance));
+
     const resultsTable = Object.entries(subtopicPerformance)
         .map(([subtopic, { correct, total }]) => `
           <tr>
@@ -121,9 +127,42 @@ function submitQuiz() {
           ${resultsTable}
         </table>
         <button class="retry-button" onclick="location.reload()">Retry Quiz</button>
-        <button class="retry-button" onclick="showChatbot()">Start the Course</button>
+        <button class="retry-button" onclick="sendResultsToGemini()">Road Map</button>
+        <button class="retry-button" onclick="showChatbot()">Chat with Bot</button>
       `;
 }
+
+async function sendResultsToGemini() {
+    const subtopicResults = JSON.parse(localStorage.getItem('subtopicPerformance'));
+
+    if (!subtopicResults) {
+        alert('No performance data available to send.');
+        return;
+    }
+
+    try {
+        const response = await fetch('http://localhost:5000/gemini', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                performance: subtopicResults,
+                topic: localStorage.getItem('selectedTopic') // Replace with the actual topic
+            }),
+        });
+
+        if (!response.ok) {
+            throw new Error('Failed to generate roadmap.');
+        }
+
+        const data = await response.json();
+        localStorage.setItem('roadmap', JSON.stringify(data.roadmap));
+        window.location.href = 'roadmap.html'; // Redirect to roadmap page
+    } catch (error) {
+        console.error('Error generating roadmap:', error);
+        alert('Failed to generate roadmap. Please try again later.');
+    }
+}
+
 
 function showChatbot() {
     document.getElementById('quiz-container').style.display = 'none';
@@ -142,11 +181,13 @@ async function sendMessage() {
     input.disabled = true;
 
     try {
-        const response = await fetch('http://localhost:5000/chat1', {
+        const response = await fetch('http://localhost:5000/chat', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ message }),
         });
+        console.log('Sending message:', message);
+
 
         if (!response.ok) {
             throw new Error('Failed to get response from chatbot');
@@ -169,6 +210,5 @@ function addMessageToChat(sender, message) {
     chatBox.appendChild(messageElement);
     chatBox.scrollTop = chatBox.scrollHeight; // Scroll to the bottom
 }
-
 
 window.onload = fetchQuestions;
