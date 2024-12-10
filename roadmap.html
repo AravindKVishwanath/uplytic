@@ -96,6 +96,17 @@
             background: #1f8dbd;
         }
 
+        .loading-spinner {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 20px;
+            font-weight: bold;
+            color: #3498db;
+            display: none; /* Initially hidden */
+        }
+
         @media screen and (max-width: 768px) {
             #roadmap-container {
                 padding: 1rem;
@@ -118,6 +129,8 @@
 </head>
 
 <body>
+<div id="loading-spinner" class="loading-spinner" style="display:none;">Loading...</div>
+
     <div id="roadmap-container">
         <h1>Your Personalized Roadmap</h1>
         <div id="roadmap-content"></div>
@@ -176,6 +189,9 @@
             const userId = localStorage.getItem('userId',); // Assuming userId is stored in localStorage
             console.log(userId)
             try {
+                document.body.style.cursor = 'wait';
+                document.getElementById('loading-spinner').style.display = 'block'; // Show the loader
+
                 const response = await fetch('http://localhost:5000/add-course', {
                     method: 'POST',
                     headers: {
@@ -194,6 +210,9 @@
             } catch (error) {
                 console.error('Error saving course:', error);
                 alert('Failed to save course. Please try again later.');
+            } finally {
+                document.body.style.cursor = 'default'; // Reset cursor
+                document.getElementById('loading-spinner').style.display = 'none'; // Hide the loader
             }
         }
 

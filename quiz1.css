@@ -207,3 +207,14 @@ th {
     align-items: center;
     margin-top: 10px;
 }
+
+.loading-spinner {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 20px;
+    font-weight: bold;
+    color: #3498db;
+    display: none; /* Initially hidden */
+}

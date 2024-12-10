@@ -4,6 +4,8 @@ let currentIndex = 0;
 
 // Fetch questions from the backend
 async function fetchQuestions() {
+    document.getElementById('loading-spinner').style.display = 'block'; // Show loading spinner
+
     try {
         const topic = localStorage.getItem('selectedTopic') ; // Replace with user input if necessary
         const response = await fetch('http://localhost:5000/app', {
@@ -29,6 +31,8 @@ async function fetchQuestions() {
     } catch (error) {
         console.error('Error fetching quiz questions:', error);
         document.getElementById('quiz-question').textContent = "Failed to load quiz questions.";
+    } finally {
+        document.getElementById('loading-spinner').style.display = 'none'; // Hide the loader after loading
     }
 }
 
