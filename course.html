@@ -194,7 +194,7 @@
     </style>
 </head>
 
-<body>
+    <body>
     <div id="loader" class="loader-container">
         <div class="loader"></div>
     </div>
@@ -384,6 +384,7 @@ async function fetchGeneratedContent() {
         }
 
         const generatedContent = await response.json();
+        localStorage.setItem('assignments', JSON.stringify(generatedContent['assignment']));
         const { header, list } = displayReferences(generatedContent['references']);
 
 // Append them to the document body or another container as needed
