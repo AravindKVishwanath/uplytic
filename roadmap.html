@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -104,7 +105,8 @@
                 font-size: 1.3rem;
             }
 
-            p, ul li {
+            p,
+            ul li {
                 font-size: 0.9rem;
             }
 
@@ -114,6 +116,7 @@
         }
     </style>
 </head>
+
 <body>
     <div id="roadmap-container">
         <h1>Your Personalized Roadmap</h1>
@@ -123,6 +126,7 @@
     </div>
 
     <script>
+        const topic = localStorage.getItem('selectedTopic');
         function loadRoadmap() {
             const roadmap = JSON.parse(localStorage.getItem('roadmap'));
 
@@ -149,11 +153,58 @@
             window.location.href = 'index.html'; // Redirect to quiz page
         }
 
-        function goToCourse(){
-            window.location.href = 'course.html'; //Redirect to course page
+        async function goToCourse() {
+            const roadmap = JSON.parse(localStorage.getItem('roadmap'));
+
+            if (!roadmap) {
+                alert('No roadmap available to save!');
+                return;
+            }
+
+            const courseData = {
+                name: topic || "Default Topic Name", // Use the selected topic or a default name
+                description: "Generated course from roadmap data", // Provide a meaningful description
+                topics: roadmap.map(item => ({
+                    name: item.subtopic,
+                    content: item.description,
+                    reference: item.resources.join(", "),
+                    assignment: item.tips.join(", "),
+                }))
+            };
+            console.log(courseData)
+
+            const userId = localStorage.getItem('userId',); // Assuming userId is stored in localStorage
+            console.log(userId)
+            try {
+                const response = await fetch('http://localhost:5000/add-course', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ userId, course: courseData }),
+                });
+
+                const result = await response.json();
+                if (response.ok) {
+                    alert('Course saved successfully!');
+                    window.location.href = 'course.html'; // Redirect to course page
+                } else {
+                    alert(`Error: ${result.message}`);
+                }
+            } catch (error) {
+                console.error('Error saving course:', error);
+                alert('Failed to save course. Please try again later.');
+            }
+        }
+
+        
+
+        function goBack() {
+            window.location.href = 'index.html'; // Redirect to quiz page
         }
 
         loadRoadmap();
     </script>
 </body>
+
 </html>

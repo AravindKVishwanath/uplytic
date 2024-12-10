@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "googleapis": "^144.0.0",
+    "playht": "^0.14.0"
+  }
+}

@@ -351,6 +351,7 @@ fetch("http://localhost:5000/signup", {
     })
     .then((data) => {
         alert("Signup successful! Your results have been saved.");
+        window.location.href = "login.html";
         console.log("Server Response:", data);
     })
     .catch((error) => {

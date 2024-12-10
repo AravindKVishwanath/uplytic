@@ -5,7 +5,7 @@ let currentIndex = 0;
 // Fetch questions from the backend
 async function fetchQuestions() {
     try {
-        const topic = localStorage.getItem('selectedTopic'); // Replace with user input if necessary
+        const topic = localStorage.getItem('selectedTopic') ; // Replace with user input if necessary
         const response = await fetch('http://localhost:5000/app', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -144,8 +144,8 @@ async function sendResultsToGemini() {
         const response = await fetch('http://localhost:5000/gemini', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                performance: subtopicResults,
+            body: JSON.stringify({ 
+                performance: subtopicResults, 
                 topic: localStorage.getItem('selectedTopic') // Replace with the actual topic
             }),
         });
@@ -186,8 +186,7 @@ async function sendMessage() {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ message }),
         });
-        console.log('Sending message:', message);
-
+        
 
         if (!response.ok) {
             throw new Error('Failed to get response from chatbot');

@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+    <style>
+        body {
+            font-family: 'Courier New', Courier, monospace;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #121212;
+            /* Dark background */
+            color: #e0e0e0;
+            /* Light text */
+        }
+
+        .login-container {
+            background-color: #1e1e2f;
+            /* Dark blueish background */
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            width: 350px;
+            text-align: center;
+        }
+
+        .login-container h2 {
+            margin-bottom: 20px;
+            color: #4a90e2;
+            /* Blue color for heading */
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #b0b3b8;
+            /* Light gray for labels */
+            font-size: 14px;
+        }
+
+        .input-group input {
+            width: 93%;
+            padding: 12px;
+            border: 1px solid #333;
+            border-radius: 8px;
+            background-color: #252536;
+            /* Darker input background */
+            color: #e0e0e0;
+            font-size: 14px;
+        }
+
+        .input-group input:focus {
+            border-color: #4a90e2;
+            outline: none;
+        }
+
+        .login-btn {
+            padding: 12px 20px;
+            background-color: #4a90e2;
+            /* Blue button */
+            color: #ffffff;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+            transition: background-color 0.3s ease;
+            font-family: 'Courier New', Courier, monospace;
+        }
+
+        .login-btn:hover {
+            background-color: #357ab8;
+            /* Darker blue */
+        }
+
+        .error-message {
+            color: #f25c54;
+            /* Red for error messages */
+            margin-top: 10px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="login-container">
+        <h2>Login</h2>
+        <div class="input-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" placeholder="Enter your email" required>
+        </div>
+        <div class="input-group">
+            <label for="password">Password</label>
+            <input type="password" id="password" placeholder="Enter your password" required>
+        </div>
+        <button class="login-btn" onclick="login()">Login</button>
+        <div id="error" class="error-message"></div>
+    </div>
+
+    <script>
+        async function login() {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const errorDiv = document.getElementById('error');
+
+            if (!email || !password) {
+                errorDiv.textContent = 'Please fill in both fields.';
+                return;
+            }
+
+            try {
+                const response = await fetch('http://localhost:5000/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ email, password }),
+                });
+
+                const result = await response.json();
+                if (result.success) {
+                    // Store the userId in localStorage
+                    localStorage.setItem('userId',result.userId);
+                    console.log(result.userId)
+                    alert('Login successful!',result);
+                    window.location.href = 'dashboard.html';
+                } else {
+                    errorDiv.textContent = result.message;
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                errorDiv.textContent = 'An error occurred. Please try again later.';
+            }
+        }
+    </script>
+</body>
+
+</html>

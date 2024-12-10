@@ -136,6 +136,9 @@
             background-color: #1D3F24;
             color: #98C379;
         }
+        li{
+            font-size: small;
+        }
     </style>
 </head>
 
@@ -144,7 +147,8 @@
         <h1>Solve Python Assignment</h1>
         <div class="editor-container">
             <textarea id="editor"># Write your Python code here...
-print("Hello, World!")</textarea>
+print("Hello, World!")
+</textarea>
         </div>
 
         <div class="action-buttons">
@@ -156,7 +160,8 @@ print("Hello, World!")</textarea>
     </div>
 
     <div class="history-container">
-        <h2>Execution History</h2>
+        <h2>Assignment Questions</h2>
+        <ol id="assignmentsList"></ol>
         <div id="history"></div>
     </div>
 
@@ -204,6 +209,72 @@ print("Hello, World!")</textarea>
                     history.innerHTML += `<div class='history-entry error'><strong>Error:</strong> ${err.toString()}</div>`;
                 });
         }
+
+
+        const user_data = {
+    "learning_style": "Visual, Independent, Long-term retention"
+};
+let taskContent = document.getElementById("editor")
+const quiz_results = {
+    "Variables": "Intermediate",
+    "Functions": "Beginner",
+    "Loops": "Advanced"
+};
+const listElement = document.getElementById('assignmentsList');
+
+    
+async function fetchGeneratedContent() {
+    try {
+        const response = await fetch('http://localhost:5000/generate-content', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                userData: user_data,
+                quizResults: quiz_results
+            })
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
+        const generatedContent = await response.json();
+        generatedContent['assignment'].forEach((assignment, index) => {
+      const listItem = document.createElement('li'); // Create a list item
+      const boldPattern = /\*\*(.*?)\*\*/;
+      const match = assignment.match(boldPattern);
+
+      if (match) {
+        const h4 = document.createElement('h4');
+        h4.textContent = match[1]; // Extract the text inside ** **
+        listItem.appendChild(h4);
+
+        // Add the remaining content as a paragraph
+        const remainingText = assignment.replace(boldPattern, '').trim();
+        const paragraph = document.createElement('p');
+        paragraph.textContent = remainingText;
+        listItem.appendChild(paragraph);
+      } else {
+        // If no bold text, just add the entire content as a paragraph
+        const paragraph = document.createElement('p');
+        paragraph.textContent = assignment;
+        listItem.appendChild(paragraph);
+      }
+
+      listElement.appendChild(listItem);  // Append it to the ordered list
+    });
+        console.log('Generated Content:', generatedContent['assignment']);
+    } catch (error) {
+        console.error('Error fetching generated content:', error.message);
+    }
+}
+
+
+    window.onload = function(){
+        fetchGeneratedContent()
+    }
     </script>
 </body>
 

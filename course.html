@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -156,8 +157,12 @@
             margin-top: 10px;
             color: #C9D1D9;
         }
+        .sidebar button{
+            color: #58A6FF
+        }
     </style>
 </head>
+
 <body>
     <div class="container">
         <div class="sidebar">
@@ -180,16 +185,188 @@
             </div>
 
             <div class="task-container">
-                <h2>Topic 3</h2>
-                <p>This is the detailed description of the task. Students can review the content and take notes here.</p>
+                <p id="task-content">This is the detailed description of the task. Students can review the content and
+                    take notes here.
+                </p>
 
                 <div class="action-buttons">
                     <button onclick="window.location.href='notes.html'">Take Notes</button>
                     <button onclick="window.location.href='assignment.html'">Solve Assignment</button>
                     <button>Ask Doubt</button>
+                    <button id="playAudioBtn">Play Audio</button>
+                    <audio id="audioPlayer" controls style="display: none;"></audio>
                 </div>
             </div>
         </div>
     </div>
+
+    <script>
+
+        const playAudioButton = document.getElementById('playAudioBtn');
+        let taskContent = document.getElementById('task-content');
+
+        console.log('Button clicked');
+        playAudioButton.addEventListener('click', async (event) => {
+    event.preventDefault(); // Prevent default behavior, such as page refresh
+
+    console.log('Task content:', taskContent); // Check if taskContent is populated correctly
+    try {
+        const response = await fetch('http://localhost:5000/generate-audio', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ text: taskContent }),
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
+        const audioBlob = await response.blob();
+        const audioURL = URL.createObjectURL(audioBlob);
+
+        // Get the audio element and set its source
+        const audioPlayer = document.getElementById('audioPlayer');
+        audioPlayer.src = audioURL;
+        audioPlayer.style.display = 'block'; // Show the audio player
+        audioPlayer.play(); // Play the audio
+    } catch (error) {
+        console.error('Error generating audio:', error.message);
+        alert('Error generating audio. Check the console for details.');
+    }
+});
+// Define the user data and quiz results
+const user_data = {
+    "learning_style": "Visual, Independent, Long-term retention"
+};
+
+const quiz_results = {
+    "Variables": "Intermediate",
+    "Functions": "Beginner",
+    "Loops": "Advanced"
+};
+let topics = []
+function updateSidebarTopics(topics) {
+  // Select all the button elements within the sidebar
+  const buttons = document.querySelectorAll('.sidebar button');
+  
+  // Loop through the first three buttons and update their text content with the topics
+  for (let i = 0; i < 3; i++) {
+    if (i < topics.length) {
+      buttons[i].textContent = topics[i];
+    }
+  }
+}
+function beautifyContent(inputString) {
+    // Break the content into sections based on headings
+    const sections = inputString.split(/(?=\*\*\d+\. )/);
+
+    // HTML template for beautification
+    let beautifiedHTML = "<div class='content-container'>\n";
+
+    sections.forEach(section => {
+        // Process each section
+        const headingMatch = section.match(/^\*\*(\d+\. [^:]+):\*\*/);
+
+        if (headingMatch) {
+            // Extract heading and content
+            const heading = headingMatch[1];
+            const content = section.replace(headingMatch[0], '').trim();
+
+            // Add heading and content to HTML
+            beautifiedHTML += `  <div class='section'>\n`;
+            beautifiedHTML += `    <h2>${heading}</h2>\n`;
+            topics.push(heading)
+            beautifiedHTML += `    <p>${content.replace(/\n/g, '<br>')}</p>\n`;
+            beautifiedHTML += `  </div>\n`;
+        } else {
+            // Add introduction or unmatched content
+            beautifiedHTML += `  <div class='intro'>\n`;
+            beautifiedHTML += `    <p>${section.trim().replace(/\n/g, '<br>')}</p>\n`;
+            beautifiedHTML += `  </div>\n`;
+        }
+    });
+
+    beautifiedHTML += "</div>";
+    updateSidebarTopics(topics)
+    // Return the final beautified HTML string
+    return beautifiedHTML;
+}
+
+function displayReferences(references) {
+  // Create an <h1> header for the section title
+  const header = document.createElement('h1');
+  header.textContent = 'Further References';
+
+  // Create a list to hold the references
+  const listElement = document.createElement('ul');
+
+  // Loop through each reference in the array
+  references.forEach((reference) => {
+    // Split the name and URL based on the colon delimiter
+    const [name, url] = reference.split(': ');
+
+    // Create a list item and an anchor element
+    const listItem = document.createElement('li');
+    const anchor = document.createElement('a');
+    anchor.style.color = "#58A6FF"
+    anchor.textContent = name;
+    anchor.href = url;
+    anchor.target = '_blank'; // Open link in a new tab
+
+    // Append the anchor to the list item, then append the list item to the list
+    listItem.appendChild(anchor);
+    listElement.appendChild(listItem);
+  });
+
+  // Return an object containing the header and the list element
+  return {
+    header: header,
+    list: listElement
+  };
+}
+
+
+
+// Function to send a POST request
+async function fetchGeneratedContent() {
+    try {
+        const response = await fetch('http://localhost:5000/generate-content', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                userData: user_data,
+                quizResults: quiz_results
+            })
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
+        const generatedContent = await response.json();
+        const { header, list } = displayReferences(generatedContent['references']);
+
+// Append them to the document body or another container as needed
+        document.body.appendChild(header);
+        document.body.appendChild(list);
+        taskContent.innerHTML = beautifyContent(generatedContent['reading_content'])
+        taskContent.appendChild(header);
+        taskContent.appendChild(list);
+        console.log('Generated Content:', generatedContent['reading_content']);
+    } catch (error) {
+        console.error('Error fetching generated content:', error.message);
+    }
+}
+
+
+    window.onload = function(){
+        fetchGeneratedContent()
+    }
+    </script>
 </body>
+
 </html>

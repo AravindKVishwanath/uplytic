@@ -1,5 +1,19 @@
 const mongoose = require("mongoose");
 
+const topicSchema = new mongoose.Schema({
+  name: { type: String, required: true },
+  content: { type: String, required: true },
+  reference: { type: String, required: true },
+  assignment: { type: String, required: true },
+});
+
+const courseSchema = new mongoose.Schema({
+  name: { type: String, required: true },
+  description: { type: String, required: true },
+  topics: [topicSchema], // Array of topics for the course
+});
+
+
 const userSchema = new mongoose.Schema(
   {
     username: {
@@ -26,6 +40,7 @@ const userSchema = new mongoose.Schema(
       type: Date,
       default: Date.now,
     },
+    courses: [courseSchema],
   },
   { timestamps: true }
 );
